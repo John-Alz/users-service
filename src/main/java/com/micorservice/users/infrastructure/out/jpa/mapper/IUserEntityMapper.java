@@ -1,18 +1,17 @@
-package com.micorservice.users.application.mapper;
+package com.micorservice.users.infrastructure.out.jpa.mapper;
 
-import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.domain.model.UserModel;
+import com.micorservice.users.infrastructure.out.jpa.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
-
 
 @Mapper(
         componentModel = "spring",
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE
 )
-public interface IUserRequestMapper {
+public interface IUserEntityMapper {
 
-    UserModel requestToModel(UserRequestDto userRequestDto);
+    UserEntity toEntity(UserModel userModel);
 
 }
