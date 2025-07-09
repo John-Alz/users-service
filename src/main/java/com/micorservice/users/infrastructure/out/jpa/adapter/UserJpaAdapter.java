@@ -3,7 +3,6 @@ package com.micorservice.users.infrastructure.out.jpa.adapter;
 import com.micorservice.users.domain.model.UserModel;
 import com.micorservice.users.domain.spi.IUserPersistencePort;
 import com.micorservice.users.infrastructure.exception.AlreadyExistsException;
-import com.micorservice.users.infrastructure.exception.NoDataFoundException;
 import com.micorservice.users.infrastructure.out.jpa.entity.UserEntity;
 import com.micorservice.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.micorservice.users.infrastructure.out.jpa.repository.IUserRepository;
