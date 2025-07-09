@@ -14,4 +14,6 @@ public interface IUserEntityMapper {
 
     UserEntity toEntity(UserModel userModel);
 
+    UserModel toModel(UserEntity userEntity);
+
 }

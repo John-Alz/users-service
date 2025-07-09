@@ -7,4 +7,6 @@ public interface IUserPersistencePort {
     void saveUser(UserModel userModel);
 
     String passwordEncode(String password);
+
+    void userExistWithEmail(String email);
 }

@@ -22,6 +22,7 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public void saveUser(UserModel userModel) {
         RoleModel roleFound = rolePersistencePort.findById(2L);
+        userPersistencePort.userExistWithEmail(userModel.getEmail());
         userModel.setRole(roleFound);
         userRulesValidator.validateUserData(userModel);
         userModel.setPassword(userPersistencePort.passwordEncode(userModel.getPassword()));
