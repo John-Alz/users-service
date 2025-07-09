@@ -11,6 +11,10 @@ public class DomainConstants {
 
     public static final int MIN_AGE = 18;
 
+    public static final String REQUIRED_FIRSTNAME = "El nombre es requerido.";
+    public static final String REQUIRED_LASTNAME = "El apellido es requerido.";
+    public static final String REQUIRED_PASSWORD = "La contraseña es requerida.";
+
     public static final String REQUIRED_EMAIL = "El email es requerido.";
     public static final String INVALID_EMAIL = "El email tiene un formato no valido ej: (example@exmaple.com).";
 

@@ -15,6 +15,16 @@ public class UserRulesValidator {
     private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile(DomainConstants.REGEX_PHONE_NUMBER);
     private static final Pattern IDENTITY_NUMBER_PATTERN = Pattern.compile(DomainConstants.REGEX_IDENTITY_NUMBER);
 
+    public void validateFirstName(String firstName) {
+        if (firstName == null || firstName.trim().isEmpty()) {
+            throw new RequiredFieldException(DomainConstants.REQUIRED_FIRSTNAME);
+        }
+    }
+    public void validateLastName(String lastName) {
+        if (lastName == null || lastName.trim().isEmpty()) {
+            throw new RequiredFieldException(DomainConstants.REQUIRED_LASTNAME);
+        }
+    }
 
     public void validateEmail(String email) {
         if (email == null || email.trim().isEmpty()) {
@@ -52,11 +62,20 @@ public class UserRulesValidator {
         }
     }
 
+    public void validatePassword(String password) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new RequiredFieldException(DomainConstants.REQUIRED_PASSWORD);
+        }
+    }
+
     public void validateUserData(UserModel user) {
-        validateEmail(user.getEmail());
-        validatePhoneNumber(user.getPhoneNumber());
+        validateFirstName(user.getFirstName());
+        validateLastName(user.getLastName());
         validateIdentityNumber(user.getDocumentNumber());
+        validatePhoneNumber(user.getPhoneNumber());
         validateAge(user.getBirthDate());
+        validateEmail(user.getEmail());
+        validatePassword(user.getPassword());
     }
 
 }

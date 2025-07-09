@@ -20,6 +20,39 @@ class UserRulesValidatorTest {
     }
 
     @Test
+    void validateFirstName_shouldThrowRequiredFieldException_whenNull() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateFirstName(null));
+        assertEquals("El nombre es requerido.", ex.getMessage());
+    }
+
+    @Test
+    void validateFirstName_shouldPass_whenValid() {
+        assertDoesNotThrow(() -> validator.validateFirstName("John"));
+    }
+
+    @Test
+    void validateLastName_shouldThrowRequiredFieldException_whenNull() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateLastName(null));
+        assertEquals("El apellido es requerido.", ex.getMessage());
+    }
+
+    @Test
+    void validateLastName_shouldPass_whenValid() {
+        assertDoesNotThrow(() -> validator.validateLastName("John"));
+    }
+
+    @Test
+    void validatePassword_shouldThrowRequiredFieldException_whenNull() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validatePassword(null));
+        assertEquals("La contraseña es requerida.", ex.getMessage());
+    }
+
+    @Test
+    void validatePassword_shouldPass_whenValid() {
+        assertDoesNotThrow(() -> validator.validatePassword("password"));
+    }
+
+    @Test
     void validateEmail_shouldThrowRequiredFieldException_whenNull() {
         RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateEmail(null));
         assertEquals("El email es requerido.", ex.getMessage());
@@ -90,10 +123,13 @@ class UserRulesValidatorTest {
     @Test
     void validateUserData_shouldPass_whenValidUser() {
         UserModel user = new UserModel();
-        user.setEmail("john@example.com");
-        user.setPhoneNumber("+573001234567");
+        user.setFirstName("John");
+        user.setLastName("Doe");
         user.setDocumentNumber("123456789");
+        user.setPhoneNumber("+573001234567");
         user.setBirthDate(LocalDate.now().minusYears(25));
+        user.setEmail("john@example.com");
+        user.setPassword("password");
         assertDoesNotThrow(() -> validator.validateUserData(user));
     }
 
