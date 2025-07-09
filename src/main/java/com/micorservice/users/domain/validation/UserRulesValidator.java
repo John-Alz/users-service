@@ -45,7 +45,7 @@ public class UserRulesValidator {
 
     public void validateAge(LocalDate birthDay) {
         if (birthDay == null) {
-            throw new RequiredFieldException(DomainConstants.REQUIRED_IDENTITY_NUMBER);
+            throw new RequiredFieldException(DomainConstants.REQUIRED_BIRTHDAY);
         }
         if (Period.between(birthDay, LocalDate.now()).getYears() < DomainConstants.MIN_AGE) {
             throw new InvalidFieldException(DomainConstants.INVALID_BIRTHDAY);

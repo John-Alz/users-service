@@ -1,6 +1,5 @@
 package com.micorservice.users.infrastructure.out.jpa.entity;
 
-import com.micorservice.users.domain.model.RoleModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
