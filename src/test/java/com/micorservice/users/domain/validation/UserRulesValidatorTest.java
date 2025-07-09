@@ -38,7 +38,7 @@ class UserRulesValidatorTest {
 
     @Test
     void validateLastName_shouldPass_whenValid() {
-        assertDoesNotThrow(() -> validator.validateLastName("John"));
+        assertDoesNotThrow(() -> validator.validateLastName("Doe"));
     }
 
     @Test
@@ -110,13 +110,13 @@ class UserRulesValidatorTest {
     }
 
     @Test
-    void vvalidateAge_shouldThrow_whenInvalid() {
+    void validateAge_shouldThrow_whenInvalid() {
         InvalidFieldException ex = assertThrows(InvalidFieldException.class, () -> validator.validateAge(LocalDate.of(2010, 07, 25)));
         assertEquals("No se puede crear la cuenta a un menor de edad.", ex.getMessage());
     }
 
     @Test
-    void vvalidateAge_shouldPass_whenValid() {
+    void validateAge_shouldPass_whenValid() {
         assertDoesNotThrow(() -> validator.validateAge(LocalDate.of(2000, 02,23)));
     }
 
