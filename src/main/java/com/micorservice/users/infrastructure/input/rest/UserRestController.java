@@ -32,6 +32,7 @@ public class UserRestController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userHandler.saveUser(userRequestDto));
     }
 
+    
     @GetMapping("/{userId}")
     public ResponseEntity<Void> validateUserRole(@PathVariable Long userId, @RequestParam String role) {
         userHandler.validateUserRole(userId, role);
