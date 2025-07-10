@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Usuarios", description = "Endpoints de gestion de usuarios.")
@@ -28,6 +29,7 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "Error de validacion", content = @Content),
     })
     @PostMapping()
+    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<SaveMessageResponse> saveUserOwner(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userHandler.saveUser(userRequestDto));
     }
