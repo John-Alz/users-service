@@ -3,6 +3,8 @@ package com.micorservice.users.infrastructure.out.jpa.adapter;
 import com.micorservice.users.domain.model.UserModel;
 import com.micorservice.users.domain.spi.IUserPersistencePort;
 import com.micorservice.users.infrastructure.exception.AlreadyExistsException;
+import com.micorservice.users.infrastructure.exception.InvalidUserRoleException;
+import com.micorservice.users.infrastructure.exception.NoDataFoundException;
 import com.micorservice.users.infrastructure.out.jpa.entity.UserEntity;
 import com.micorservice.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.micorservice.users.infrastructure.out.jpa.repository.IUserRepository;
@@ -31,6 +33,20 @@ public class UserJpaAdapter implements IUserPersistencePort {
         UserEntity userFound = userRepository.findByEmail(email).orElse(null);
         if (userFound != null) {
             throw new AlreadyExistsException("Ya existe un usuario registrado con ese email en nuestro sistema.");
+        }
+    }
+
+    @Override
+    public void validateUserRole(Long userId, String expectedRole) {
+        UserEntity userFound = userRepository.findById(userId).orElse(null);
+
+        if (userFound == null) {
+            throw new NoDataFoundException("No se econtro usuario con ese id.");
+        }
+        System.out.println(userFound.getRole());
+
+        if (!userFound.getRole().getName().equals(expectedRole)) {
+            throw new InvalidUserRoleException();
         }
     }
 }

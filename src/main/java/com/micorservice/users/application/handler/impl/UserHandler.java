@@ -26,4 +26,9 @@ public class UserHandler implements IUserHandler {
         userServicePort.saveUser(userModel);
         return new SaveMessageResponse("Propietario creado.", LocalDateTime.now());
     }
+
+    @Override
+    public void validateUserRole(Long userId, String expectedRole) {
+        userServicePort.validateUserRole(userId, expectedRole);
+    }
 }

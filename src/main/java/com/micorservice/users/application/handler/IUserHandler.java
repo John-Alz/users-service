@@ -7,4 +7,5 @@ public interface IUserHandler {
 
     SaveMessageResponse saveUser(UserRequestDto userRequestDto);
 
+    void validateUserRole(Long userId, String expectedRole);
 }
