@@ -28,4 +28,9 @@ public class UserUseCase implements IUserServicePort {
         userModel.setPassword(userPersistencePort.passwordEncode(userModel.getPassword()));
         userPersistencePort.saveUser(userModel);
     }
+
+    @Override
+    public void validateUserRole(Long userId, String expectedRole) {
+        userPersistencePort.validateUserRole(userId, expectedRole);
+    }
 }

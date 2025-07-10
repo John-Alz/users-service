@@ -9,4 +9,6 @@ public interface IUserPersistencePort {
     String passwordEncode(String password);
 
     void userExistWithEmail(String email);
+
+    void validateUserRole(Long userId, String expectedRole);
 }

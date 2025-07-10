@@ -11,10 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Usuarios", description = "Endpoints de gestion de usuarios.")
 @RestController
@@ -33,6 +30,12 @@ public class UserRestController {
     @PostMapping()
     public ResponseEntity<SaveMessageResponse> saveUserOwner(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userHandler.saveUser(userRequestDto));
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<Void> validateUserRole(@PathVariable Long userId, @RequestParam String role) {
+        userHandler.validateUserRole(userId, role);
+        return ResponseEntity.ok().build();
     }
 
 
