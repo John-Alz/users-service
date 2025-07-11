@@ -68,4 +68,18 @@ class UserUseCaseTest {
         assert userModel.getRole().equals(roleModel);
         assert userModel.getPassword().equals("encode-password");
     }
+
+    @Test
+    void validateUserRole_ShouldDelegateToPersistencePort() {
+        // Arrange
+        Long userId = 5L;
+        String expectedRole = "OWNER";
+
+        // Act
+        userUseCase.validateUserRole(userId, expectedRole);
+
+        // Assert
+        verify(userPersistencePort).validateUserRole(userId, expectedRole);
+    }
+
 }
