@@ -1,6 +1,7 @@
 package com.micorservice.users.infrastructure.security.config;
 
 import com.micorservice.users.application.utils.JwtUtils;
+import com.micorservice.users.infrastructure.security.CustomAccessDeniedHandler;
 import com.micorservice.users.infrastructure.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,9 +23,11 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtUtils jwtUtils;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
-    public SecurityConfig(JwtUtils jwtUtils) {
+    public SecurityConfig(JwtUtils jwtUtils, CustomAccessDeniedHandler customAccessDeniedHandler) {
         this.jwtUtils = jwtUtils;
+        this.customAccessDeniedHandler = customAccessDeniedHandler;
     }
 
     @Bean
@@ -35,6 +38,8 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtils), BasicAuthenticationFilter.class)
+                .exceptionHandling(exception ->
+                        exception.accessDeniedHandler(customAccessDeniedHandler))
                 .build();
     }
 
