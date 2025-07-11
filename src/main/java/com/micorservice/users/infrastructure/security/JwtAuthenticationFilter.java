@@ -1,6 +1,7 @@
 package com.micorservice.users.infrastructure.security;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.micorservice.users.application.dto.auth.AuthInfo;
 import com.micorservice.users.application.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -41,9 +42,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             DecodedJWT decodedJWT = jwtUtils.verifyToken(jwtToken);
             String email = jwtUtils.extractEmail(decodedJWT);
             String role = "ROLE_" + jwtUtils.extracEspecificClaim(decodedJWT, "authorities").asString();
+            Long id = jwtUtils.extracEspecificClaim(decodedJWT, "id").asLong();
+            AuthInfo authInfo = new AuthInfo(id, email, role);
             Collection<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
             SecurityContext context = SecurityContextHolder.getContext();
-            Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(authInfo, null, authorities);
             context.setAuthentication(authentication);
             SecurityContextHolder.setContext(context);
         }

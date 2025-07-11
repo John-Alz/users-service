@@ -29,7 +29,6 @@ public class UserRestController {
             @ApiResponse(responseCode = "404", description = "Error de validacion", content = @Content),
     })
     @PostMapping()
-    @PreAuthorize("hasRole('ADMINISTRATOR')")
     public ResponseEntity<SaveMessageResponse> saveUserOwner(@RequestBody UserRequestDto userRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userHandler.saveUser(userRequestDto));
     }

@@ -57,9 +57,10 @@ class UserModelTest {
         String email = "alice.smith@example.com";
         String password = "anotherSecurePassword";
         RoleModel role = new RoleModel(2L, "USER", "Usuario estándar");
+        Long restaurantId = 2L;
 
         // Act
-        UserModel user = new UserModel(id, firstName, lastName, documentNumber, phoneNumber, birthDate, email, password, role);
+        UserModel user = new UserModel(id, firstName, lastName, documentNumber, phoneNumber, birthDate, email, password, role, restaurantId);
 
         // Assert
         assertEquals(id, user.getId());

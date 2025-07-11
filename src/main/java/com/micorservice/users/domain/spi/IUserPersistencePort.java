@@ -15,4 +15,10 @@ public interface IUserPersistencePort {
     UserModel getUserByEmail(String email);
 
     void validateUserRole(Long userId, String expectedRole);
+
+    Long getUserId();
+    String getRoleUser();
+
+    void isOwnerOfRestaurant(Long restaurantId);
+
 }
