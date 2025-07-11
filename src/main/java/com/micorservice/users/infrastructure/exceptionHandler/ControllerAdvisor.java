@@ -3,10 +3,7 @@ package com.micorservice.users.infrastructure.exceptionHandler;
 import com.micorservice.users.domain.exception.InvalidFieldException;
 import com.micorservice.users.domain.exception.PasswordInvalidException;
 import com.micorservice.users.domain.exception.RequiredFieldException;
-import com.micorservice.users.infrastructure.exception.AlreadyExistsException;
-import com.micorservice.users.infrastructure.exception.InvalidUserRoleException;
-import com.micorservice.users.infrastructure.exception.NoDataFoundException;
-import com.micorservice.users.infrastructure.exception.UserNotFoundByEmailException;
+import com.micorservice.users.infrastructure.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -51,5 +48,17 @@ public class ControllerAdvisor {
     public ResponseEntity<ExceptionResponse> handlePasswordInvalidException(PasswordInvalidException e) {
         return ResponseEntity.badRequest().body(new ExceptionResponse("Contraseña incorrecta.", LocalDateTime.now()));
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponse> handleUnauthorizedException(UnauthorizedException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(Exception e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
+    }
+
+
 
 }

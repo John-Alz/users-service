@@ -39,7 +39,7 @@ public class AuthHandler implements IAuthHandler {
     public Authentication authenticate(String email, String password) {
         UserModel user = authServicePort.loginUser(email, password);
         List<SimpleGrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
-        AuthInfo authInfo = new AuthInfo(user.getId(), email);
+        AuthInfo authInfo = new AuthInfo(user.getId(), email, null);
         return new UsernamePasswordAuthenticationToken(authInfo, password, authorities);
     }
 }
