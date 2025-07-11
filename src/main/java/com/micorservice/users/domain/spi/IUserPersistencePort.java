@@ -8,7 +8,11 @@ public interface IUserPersistencePort {
 
     String passwordEncode(String password);
 
+    boolean passwordDecode(String passwordRequest, String passwordUserDb);
+
     void userExistWithEmail(String email);
+
+    UserModel getUserByEmail(String email);
 
     void validateUserRole(Long userId, String expectedRole);
 }

@@ -1,8 +1,10 @@
 package com.micorservice.users.infrastructure.configuration;
 
+import com.micorservice.users.domain.api.IAuthServicePort;
 import com.micorservice.users.domain.api.IUserServicePort;
 import com.micorservice.users.domain.spi.IRolePersistencePort;
 import com.micorservice.users.domain.spi.IUserPersistencePort;
+import com.micorservice.users.domain.usecase.AuthUseCase;
 import com.micorservice.users.domain.usecase.UserUseCase;
 import com.micorservice.users.domain.validation.UserRulesValidator;
 import com.micorservice.users.infrastructure.out.jpa.adapter.RoleJpaAdapter;
@@ -40,6 +42,11 @@ public class BeanConfiguration {
     @Bean
     public IUserServicePort userServicePort() {
         return new UserUseCase(userPersistencePort(), rolePersistencePort(), userRulesValidator());
+    }
+
+    @Bean
+    public IAuthServicePort authServicePort() {
+        return new AuthUseCase(userPersistencePort());
     }
 
     @Bean
