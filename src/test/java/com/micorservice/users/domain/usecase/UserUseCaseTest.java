@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -72,7 +72,6 @@ class UserUseCaseTest {
 
         userUseCase.saveUser(userModel);
 
-        verify(userPersistencePort).isOwnerOfRestaurant(77L);
         verify(userPersistencePort).getRoleUser();
         verify(rolePersistencePort).findById(2L);
         verify(userPersistencePort).userExistWithEmail("john@gmail.com");
@@ -80,8 +79,9 @@ class UserUseCaseTest {
         verify(userPersistencePort).passwordEncode("password");
         verify(userPersistencePort).saveUser(userModel);
 
-        assert userModel.getRole().equals(adminRole);
-        assert userModel.getPassword().equals("encoded-password");
+        assertEquals(adminRole, userModel.getRole());
+        assertEquals("encoded-password", userModel.getPassword());
+        assertNull(userModel.getRestaurantId());  // Se espera que se seteé a null
     }
 
     @Test
@@ -92,16 +92,16 @@ class UserUseCaseTest {
 
         userUseCase.saveUser(userModel);
 
-        verify(userPersistencePort).isOwnerOfRestaurant(77L);
         verify(userPersistencePort).getRoleUser();
+        verify(userPersistencePort).isOwnerOfRestaurant(77L);
         verify(rolePersistencePort).findById(3L);
         verify(userPersistencePort).userExistWithEmail("john@gmail.com");
         verify(userRulesValidator).validateUserData(userModel);
         verify(userPersistencePort).passwordEncode("password");
         verify(userPersistencePort).saveUser(userModel);
 
-        assert userModel.getRole().equals(ownerRole);
-        assert userModel.getPassword().equals("encoded-password");
+        assertEquals(ownerRole, userModel.getRole());
+        assertEquals("encoded-password", userModel.getPassword());
     }
 
     @Test
@@ -112,7 +112,6 @@ class UserUseCaseTest {
 
         userUseCase.saveUser(userModel);
 
-        verify(userPersistencePort).isOwnerOfRestaurant(77L);
         verify(userPersistencePort).getRoleUser();
         verify(rolePersistencePort).findById(4L);
         verify(userPersistencePort).userExistWithEmail("john@gmail.com");
@@ -120,21 +119,23 @@ class UserUseCaseTest {
         verify(userPersistencePort).passwordEncode("password");
         verify(userPersistencePort).saveUser(userModel);
 
-        assert userModel.getRole().equals(employeeRole);
-        assert userModel.getPassword().equals("encoded-password");
+        assertEquals(employeeRole, userModel.getRole());
+        assertEquals("encoded-password", userModel.getPassword());
+        assertNull(userModel.getRestaurantId());  // Se espera que se seteé a null
     }
 
     @Test
     void saveUser_ShouldThrowException_WhenRoleIsUnknown() {
         when(userPersistencePort.getRoleUser()).thenReturn("ROLE_CLIENT");
 
-        assertThrows(NoDataFoundException.class, () -> userUseCase.saveUser(userModel));
+        NoDataFoundException exception = assertThrows(NoDataFoundException.class, () -> userUseCase.saveUser(userModel));
+
+        assertEquals("Rol no econtrado.", exception.getMessage());
 
         verify(userPersistencePort).getRoleUser();
         verify(rolePersistencePort, never()).findById(anyLong());
         verify(userPersistencePort, never()).saveUser(any());
     }
-
 
     @Test
     void validateUserRole_ShouldDelegateToPersistencePort() {

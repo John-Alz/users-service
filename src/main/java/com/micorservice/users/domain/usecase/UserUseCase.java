@@ -22,15 +22,18 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveUser(UserModel userModel) {
-        userPersistencePort.isOwnerOfRestaurant(userModel.getRestaurantId());
+
         String role = userPersistencePort.getRoleUser();
         RoleModel roleFound = null;
 
         if (role == null) {
             roleFound = rolePersistencePort.findById(4L);
+            userModel.setRestaurantId(null);
         } else if (role.equals("ROLE_ADMINISTRATOR")) {
             roleFound = rolePersistencePort.findById(2L);
+            userModel.setRestaurantId(null);
         } else if (role.equals("ROLE_OWNER")) {
+            userPersistencePort.isOwnerOfRestaurant(userModel.getRestaurantId());
             roleFound = rolePersistencePort.findById(3L);
         } else {
             throw new NoDataFoundException("Rol no econtrado.");
