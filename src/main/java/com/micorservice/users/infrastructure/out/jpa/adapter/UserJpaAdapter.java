@@ -12,6 +12,7 @@ import com.micorservice.users.infrastructure.out.jpa.entity.UserEntity;
 import com.micorservice.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.micorservice.users.infrastructure.out.jpa.repository.IUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -73,13 +74,20 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public Long getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
+        String info = authentication.getPrincipal().toString();
+        System.out.println(info);
         return authInfo.id();
     }
 
     @Override
     public String getRoleUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
+        AuthInfo authInfo;
+        if (authentication instanceof AnonymousAuthenticationToken) {
+            return null;
+        } else {
+          authInfo  = (AuthInfo) authentication.getPrincipal();
+        }
         return authInfo.role();
     }
 
@@ -87,6 +95,7 @@ public class UserJpaAdapter implements IUserPersistencePort {
     public void isOwnerOfRestaurant(Long restaurantId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
+        System.out.println(authInfo.id());
         restaurantClient.isOwnerOfRestaurant(restaurantId, authInfo.id());
     }
 

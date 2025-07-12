@@ -24,7 +24,7 @@ public class UserHandler implements IUserHandler {
     public SaveMessageResponse saveUser(UserRequestDto userRequestDto) {
         UserModel userModel = userRequestMapper.requestToModel(userRequestDto);
         userServicePort.saveUser(userModel);
-        return new SaveMessageResponse("Propietario creado.", LocalDateTime.now());
+        return new SaveMessageResponse("Usuario creado.", LocalDateTime.now());
     }
 
     @Override
