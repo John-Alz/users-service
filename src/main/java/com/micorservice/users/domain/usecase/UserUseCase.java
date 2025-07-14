@@ -50,4 +50,9 @@ public class UserUseCase implements IUserServicePort {
     public void validateUserRole(Long userId, String expectedRole) {
         userPersistencePort.validateUserRole(userId, expectedRole);
     }
+
+    @Override
+    public Long getRestaurantByUser(Long employeeId) {
+        return userPersistencePort.getRestaurantByUser(employeeId);
+    }
 }

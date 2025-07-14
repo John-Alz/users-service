@@ -3,11 +3,8 @@ package com.micorservice.users.infrastructure.out.jpa.adapter;
 import com.micorservice.users.application.dto.auth.AuthInfo;
 import com.micorservice.users.domain.model.UserModel;
 import com.micorservice.users.domain.spi.IUserPersistencePort;
+import com.micorservice.users.infrastructure.exception.*;
 import com.micorservice.users.infrastructure.feign.clients.RestaurantClient;
-import com.micorservice.users.infrastructure.exception.AlreadyExistsException;
-import com.micorservice.users.infrastructure.exception.InvalidUserRoleException;
-import com.micorservice.users.infrastructure.exception.NoDataFoundException;
-import com.micorservice.users.infrastructure.exception.UserNotFoundByEmailException;
 import com.micorservice.users.infrastructure.out.jpa.entity.UserEntity;
 import com.micorservice.users.infrastructure.out.jpa.mapper.IUserEntityMapper;
 import com.micorservice.users.infrastructure.out.jpa.repository.IUserRepository;
@@ -97,6 +94,18 @@ public class UserJpaAdapter implements IUserPersistencePort {
         AuthInfo authInfo = (AuthInfo) authentication.getPrincipal();
         System.out.println(authInfo.id());
         restaurantClient.isOwnerOfRestaurant(restaurantId, authInfo.id());
+    }
+
+    @Override
+    public Long getRestaurantByUser(Long employeeId) {
+        UserEntity userFound = userRepository.findById(employeeId).orElse(null);
+        if (userFound == null) {
+            throw new UserNotFoundByIdException();
+        }
+        if (!userFound.getRole().getName().equals("EMPLOYEE")) {
+            throw new InvalidUserRoleException();
+        }
+        return userFound.getRestaurantId();
     }
 
 

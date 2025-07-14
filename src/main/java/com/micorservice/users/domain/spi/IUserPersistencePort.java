@@ -21,4 +21,7 @@ public interface IUserPersistencePort {
 
     void isOwnerOfRestaurant(Long restaurantId);
 
+    Long getRestaurantByUser(Long employeeId);
+
+
 }

@@ -1,5 +1,6 @@
 package com.micorservice.users.infrastructure.input.rest;
 
+import com.micorservice.users.application.dto.request.RestaurantIdResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
@@ -37,6 +38,12 @@ public class UserRestController {
     public ResponseEntity<Void> validateUserRole(@PathVariable Long userId, @RequestParam String role) {
         userHandler.validateUserRole(userId, role);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{userId}/restaurant")
+    public ResponseEntity<RestaurantIdResponseDto> getRestaurantByEmployee(@PathVariable Long userId) {
+        RestaurantIdResponseDto restaurant = userHandler.getRestaurantByUser(userId);
+        return ResponseEntity.ok(restaurant);
     }
 
 
