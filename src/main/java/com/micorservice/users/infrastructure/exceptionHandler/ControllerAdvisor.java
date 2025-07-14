@@ -59,6 +59,11 @@ public class ControllerAdvisor {
         return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
     }
 
+    @ExceptionHandler(UserNotFoundByIdException.class)
+    public ResponseEntity<ExceptionResponse> handleUserNotFoundByIdException(UserNotFoundByIdException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse("No existe usuario con ese id.", LocalDateTime.now()));
+    }
+
 
 
 }
