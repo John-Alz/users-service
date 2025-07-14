@@ -146,4 +146,13 @@ class UserUseCaseTest {
 
         verify(userPersistencePort).validateUserRole(userId, expectedRole);
     }
+
+    @Test
+    void getRestaurantByUser_ShouldDelegateToPersistencePort() {
+        Long userId = 5L;
+
+        userUseCase.getRestaurantByUser(userId);
+
+        verify(userPersistencePort, times(1)).getRestaurantByUser(userId);
+    }
 }
