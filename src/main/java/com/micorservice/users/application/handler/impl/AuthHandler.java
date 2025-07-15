@@ -5,6 +5,7 @@ import com.micorservice.users.application.dto.request.LoginRequestDto;
 import com.micorservice.users.application.dto.response.LoginUserResponseDto;
 import com.micorservice.users.application.handler.IAuthHandler;
 import com.micorservice.users.application.mapper.IAuthRequestMapper;
+import com.micorservice.users.application.utils.ApplicationConstants;
 import com.micorservice.users.application.utils.JwtUtils;
 import com.micorservice.users.domain.api.IAuthServicePort;
 import com.micorservice.users.domain.model.UserModel;
@@ -33,7 +34,7 @@ public class AuthHandler implements IAuthHandler {
         Authentication authentication = this.authenticate(loginRequestDto.email(), loginRequestDto.password());
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String accessToken = jwtUtils.createToken(authentication);
-        return new LoginUserResponseDto(loginRequestDto.email(), "Logueado", accessToken);
+        return new LoginUserResponseDto(loginRequestDto.email(), ApplicationConstants.LOGGED_USER_MESSAGE, accessToken);
     }
 
     public Authentication authenticate(String email, String password) {

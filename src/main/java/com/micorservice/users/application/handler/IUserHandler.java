@@ -9,9 +9,9 @@ public interface IUserHandler {
 
     SaveMessageResponse saveUser(UserRequestDto userRequestDto);
 
-    void validateUserRole(Long userId, String expectedRole);
+    SaveMessageResponse saveEmployee(UserRequestDto userRequestDto, Long restaurantId);
 
-    RestaurantIdResponseDto getRestaurantByUser(Long employeeId);
+    void validateUserRole(Long userId, String expectedRole);
 
     PhoneResponseDto getPhoneNumberByUserId(Long customerId);
 

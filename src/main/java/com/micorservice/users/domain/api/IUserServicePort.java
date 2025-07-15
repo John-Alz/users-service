@@ -6,9 +6,10 @@ public interface IUserServicePort {
 
     void saveUser(UserModel userModel);
 
+    void saveEmployee(UserModel userModel, Long restaurantId);
+
     void validateUserRole(Long userId, String expectedRole);
 
-    Long getRestaurantByUser(Long employeeId);
     String getPhoneNumberByUserId(Long customerId);
 
 }

@@ -2,8 +2,11 @@ package com.micorservice.users.infrastructure.feign.clients;
 
 import com.micorservice.users.infrastructure.feign.config.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
         name = "foodcourt",
@@ -12,7 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 )
 public interface RestaurantClient {
 
+
     @GetMapping("/{restaurantId}/belongs-to/{ownerId}")
     void isOwnerOfRestaurant(@PathVariable Long restaurantId, @PathVariable Long ownerId);
 
-}
+    @PostMapping("create-employee")
+    void createEmployee(@RequestParam("userId") Long userId, @RequestParam("restaurantId") Long restaurantId);
+
+
+    }

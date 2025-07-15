@@ -6,6 +6,8 @@ public interface IUserPersistencePort {
 
     void saveUser(UserModel userModel);
 
+    UserModel saveEmployee(UserModel userModel, Long restaurantId);
+
     String passwordEncode(String password);
 
     boolean passwordDecode(String passwordRequest, String passwordUserDb);
@@ -21,7 +23,7 @@ public interface IUserPersistencePort {
 
     void isOwnerOfRestaurant(Long restaurantId);
 
-    Long getRestaurantByUser(Long employeeId);
+    void createEmployee(Long employeeId, Long restaurantId);
 
     String getPhoneNumberByUserId(Long customerId);
 
