@@ -10,6 +10,6 @@ public record UserRequestDto(
          LocalDate birthDate,
          String email,
          String password,
-         Long restaurantId
+         Long restaurantId // cambiar
 ) {
 }

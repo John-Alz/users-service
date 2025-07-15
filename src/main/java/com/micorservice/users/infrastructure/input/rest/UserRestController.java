@@ -1,6 +1,7 @@
 package com.micorservice.users.infrastructure.input.rest;
 
-import com.micorservice.users.application.dto.request.RestaurantIdResponseDto;
+import com.micorservice.users.application.dto.response.PhoneResponseDto;
+import com.micorservice.users.application.dto.response.RestaurantIdResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
@@ -44,6 +45,12 @@ public class UserRestController {
     public ResponseEntity<RestaurantIdResponseDto> getRestaurantByEmployee(@PathVariable Long userId) {
         RestaurantIdResponseDto restaurant = userHandler.getRestaurantByUser(userId);
         return ResponseEntity.ok(restaurant);
+    }
+
+    @GetMapping("/{userId}/phone")
+    public ResponseEntity<PhoneResponseDto> getPhoneByUserId(@PathVariable Long userId) {
+        PhoneResponseDto phoneNumber = userHandler.getPhoneNumberByUserId(userId);
+        return ResponseEntity.ok(phoneNumber);
     }
 
 

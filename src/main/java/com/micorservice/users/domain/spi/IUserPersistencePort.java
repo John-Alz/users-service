@@ -23,5 +23,8 @@ public interface IUserPersistencePort {
 
     Long getRestaurantByUser(Long employeeId);
 
+    String getPhoneNumberByUserId(Long customerId);
+
+
 
 }

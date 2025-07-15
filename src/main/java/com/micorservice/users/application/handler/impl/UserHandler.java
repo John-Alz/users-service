@@ -1,6 +1,7 @@
 package com.micorservice.users.application.handler.impl;
 
-import com.micorservice.users.application.dto.request.RestaurantIdResponseDto;
+import com.micorservice.users.application.dto.response.PhoneResponseDto;
+import com.micorservice.users.application.dto.response.RestaurantIdResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
@@ -37,5 +38,11 @@ public class UserHandler implements IUserHandler {
     public RestaurantIdResponseDto getRestaurantByUser(Long employeeId) {
         Long restaurantId = userServicePort.getRestaurantByUser(employeeId);
         return new RestaurantIdResponseDto(restaurantId);
+    }
+
+    @Override
+    public PhoneResponseDto getPhoneNumberByUserId(Long customerId) {
+        String phoneNumber = userServicePort.getPhoneNumberByUserId(customerId);
+        return new PhoneResponseDto(phoneNumber);
     }
 }
