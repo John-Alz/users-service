@@ -108,5 +108,14 @@ public class UserJpaAdapter implements IUserPersistencePort {
         return userFound.getRestaurantId();
     }
 
+    @Override
+    public String getPhoneNumberByUserId(Long customerId) {
+        UserEntity userFound = userRepository.findById(customerId).orElse(null);
+        if (userFound == null) {
+            throw new UserNotFoundByIdException();
+        }
+        return userFound.getPhoneNumber();
+    }
+
 
 }

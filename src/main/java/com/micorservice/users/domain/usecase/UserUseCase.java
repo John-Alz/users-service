@@ -22,7 +22,6 @@ public class UserUseCase implements IUserServicePort {
 
     @Override
     public void saveUser(UserModel userModel) {
-
         String role = userPersistencePort.getRoleUser();
         RoleModel roleFound = null;
 
@@ -30,7 +29,7 @@ public class UserUseCase implements IUserServicePort {
             roleFound = rolePersistencePort.findById(4L);
             userModel.setRestaurantId(null);
         } else if (role.equals("ROLE_ADMINISTRATOR")) {
-            roleFound = rolePersistencePort.findById(2L);
+            roleFound = rolePersistencePort.findById(2L); // Constante para ser mas descriptivo
             userModel.setRestaurantId(null);
         } else if (role.equals("ROLE_OWNER")) {
             userPersistencePort.isOwnerOfRestaurant(userModel.getRestaurantId());
@@ -54,5 +53,10 @@ public class UserUseCase implements IUserServicePort {
     @Override
     public Long getRestaurantByUser(Long employeeId) {
         return userPersistencePort.getRestaurantByUser(employeeId);
+    }
+
+    @Override
+    public String getPhoneNumberByUserId(Long customerId) {
+        return userPersistencePort.getPhoneNumberByUserId(customerId);
     }
 }
