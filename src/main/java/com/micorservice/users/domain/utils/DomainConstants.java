@@ -26,4 +26,14 @@ public class DomainConstants {
 
     public static final String REQUIRED_BIRTHDAY = "La fecha de nacimiento es requerida.";
     public static final String INVALID_BIRTHDAY   = "No se puede crear la cuenta a un menor de edad.";
+
+
+    // Role constants
+
+    public static final Long ROLE_CUSTOMER = 4L;
+    public static final Long ROLE_OWNER = 2L;
+    public static final Long ROLE_EMPLOYEE = 3L;
+
+    public static final String ROLE_ADMIN = "ROLE_ADMINISTRATOR";
+    public static final String ROLE_NOT_FOUND= "Rol no econtrado.";
 }

@@ -8,17 +8,11 @@ import com.micorservice.users.domain.validation.UserRulesValidator;
 import com.micorservice.users.infrastructure.exception.NoDataFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
-import java.time.LocalDate;
+import org.mockito.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-@ExtendWith(MockitoExtension.class)
 class UserUseCaseTest {
 
     @Mock
@@ -33,126 +27,118 @@ class UserUseCaseTest {
     @InjectMocks
     private UserUseCase userUseCase;
 
-    private UserModel userModel;
-    private RoleModel adminRole;
-    private RoleModel ownerRole;
-    private RoleModel employeeRole;
+    private AutoCloseable closeable;
 
     @BeforeEach
     void setUp() {
-        adminRole = new RoleModel();
-        adminRole.setId(2L);
-        adminRole.setName("ADMINISTRATOR");
-
-        ownerRole = new RoleModel();
-        ownerRole.setId(3L);
-        ownerRole.setName("OWNER");
-
-        employeeRole = new RoleModel();
-        employeeRole.setId(4L);
-        employeeRole.setName("EMPLOYEE");
-
-        userModel = new UserModel();
-        userModel.setId(1L);
-        userModel.setFirstName("John");
-        userModel.setLastName("Angel");
-        userModel.setDocumentNumber("10035678934");
-        userModel.setPhoneNumber("314575937");
-        userModel.setBirthDate(LocalDate.of(2003, 7, 26));
-        userModel.setEmail("john@gmail.com");
-        userModel.setPassword("password");
-        userModel.setRestaurantId(77L);
+        closeable = MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void saveUser_ShouldAssignAdministratorRole_WhenCallerIsAdministrator() {
-        when(userPersistencePort.getRoleUser()).thenReturn("ROLE_ADMINISTRATOR");
-        when(rolePersistencePort.findById(2L)).thenReturn(adminRole);
-        when(userPersistencePort.passwordEncode("password")).thenReturn("encoded-password");
+    void saveUser_ShouldSaveCustomer_WhenRoleIsNull() {
+        // Arrange
+        UserModel user = new UserModel();
+        user.setEmail("test@example.com");
+        user.setPassword("123");
 
-        userUseCase.saveUser(userModel);
-
-        verify(userPersistencePort).getRoleUser();
-        verify(rolePersistencePort).findById(2L);
-        verify(userPersistencePort).userExistWithEmail("john@gmail.com");
-        verify(userRulesValidator).validateUserData(userModel);
-        verify(userPersistencePort).passwordEncode("password");
-        verify(userPersistencePort).saveUser(userModel);
-
-        assertEquals(adminRole, userModel.getRole());
-        assertEquals("encoded-password", userModel.getPassword());
-        assertNull(userModel.getRestaurantId());  // Se espera que se seteé a null
-    }
-
-    @Test
-    void saveUser_ShouldAssignOwnerRole_WhenCallerIsOwner() {
-        when(userPersistencePort.getRoleUser()).thenReturn("ROLE_OWNER");
-        when(rolePersistencePort.findById(3L)).thenReturn(ownerRole);
-        when(userPersistencePort.passwordEncode("password")).thenReturn("encoded-password");
-
-        userUseCase.saveUser(userModel);
-
-        verify(userPersistencePort).getRoleUser();
-        verify(userPersistencePort).isOwnerOfRestaurant(77L);
-        verify(rolePersistencePort).findById(3L);
-        verify(userPersistencePort).userExistWithEmail("john@gmail.com");
-        verify(userRulesValidator).validateUserData(userModel);
-        verify(userPersistencePort).passwordEncode("password");
-        verify(userPersistencePort).saveUser(userModel);
-
-        assertEquals(ownerRole, userModel.getRole());
-        assertEquals("encoded-password", userModel.getPassword());
-    }
-
-    @Test
-    void saveUser_ShouldAssignEmployeeRole_WhenRoleIsNull() {
+        RoleModel customerRole = new RoleModel(4L, "CUSTOMER", "CUSTOMER"); // ROLE_CUSTOMER = 4L
         when(userPersistencePort.getRoleUser()).thenReturn(null);
-        when(rolePersistencePort.findById(4L)).thenReturn(employeeRole);
-        when(userPersistencePort.passwordEncode("password")).thenReturn("encoded-password");
+        when(rolePersistencePort.findById(4L)).thenReturn(customerRole);
+        when(userPersistencePort.passwordEncode("123")).thenReturn("encodedPassword");
 
-        userUseCase.saveUser(userModel);
+        // Act
+        userUseCase.saveUser(user);
 
-        verify(userPersistencePort).getRoleUser();
-        verify(rolePersistencePort).findById(4L);
-        verify(userPersistencePort).userExistWithEmail("john@gmail.com");
-        verify(userRulesValidator).validateUserData(userModel);
-        verify(userPersistencePort).passwordEncode("password");
-        verify(userPersistencePort).saveUser(userModel);
+        // Assert
+        verify(userPersistencePort).userExistWithEmail("test@example.com");
+        verify(userRulesValidator).validateUserData(user);
+        verify(userPersistencePort).saveUser(user);
+        assertEquals("encodedPassword", user.getPassword());
+        assertEquals(customerRole, user.getRole());
+    }
 
-        assertEquals(employeeRole, userModel.getRole());
-        assertEquals("encoded-password", userModel.getPassword());
-        assertNull(userModel.getRestaurantId());  // Se espera que se seteé a null
+    @Test
+    void saveUser_ShouldSaveOwner_WhenRoleIsAdmin() {
+        // Arrange
+        UserModel user = new UserModel();
+        user.setEmail("admin@example.com");
+        user.setPassword("admin123");
+
+        RoleModel ownerRole = new RoleModel(2L, "OWNER", "OWNER"); // ROLE_OWNER = 2L
+        when(userPersistencePort.getRoleUser()).thenReturn("ROLE_ADMINISTRATOR"); // ROLE_ADMIN
+        when(rolePersistencePort.findById(2L)).thenReturn(ownerRole);
+        when(userPersistencePort.passwordEncode("admin123")).thenReturn("encoded");
+
+        // Act
+        userUseCase.saveUser(user);
+
+        // Assert
+        verify(userPersistencePort).userExistWithEmail("admin@example.com");
+        verify(userRulesValidator).validateUserData(user);
+        verify(userPersistencePort).saveUser(user);
+        assertEquals("encoded", user.getPassword());
+        assertEquals(ownerRole, user.getRole());
     }
 
     @Test
     void saveUser_ShouldThrowException_WhenRoleIsUnknown() {
-        when(userPersistencePort.getRoleUser()).thenReturn("ROLE_CLIENT");
+        // Arrange
+        UserModel user = new UserModel();
+        when(userPersistencePort.getRoleUser()).thenReturn("INVALID_ROLE");
 
-        NoDataFoundException exception = assertThrows(NoDataFoundException.class, () -> userUseCase.saveUser(userModel));
-
-        assertEquals("Rol no econtrado.", exception.getMessage());
-
-        verify(userPersistencePort).getRoleUser();
-        verify(rolePersistencePort, never()).findById(anyLong());
+        // Act & Assert
+        NoDataFoundException exception = assertThrows(NoDataFoundException.class, () -> userUseCase.saveUser(user));
+        assertEquals("Rol no econtrado.", exception.getMessage()); // ROLE_NOT_FOUND
         verify(userPersistencePort, never()).saveUser(any());
     }
 
     @Test
-    void validateUserRole_ShouldDelegateToPersistencePort() {
-        Long userId = 5L;
-        String expectedRole = "OWNER";
+    void saveEmployee_ShouldSaveEmployeeCorrectly() {
+        // Arrange
+        Long restaurantId = 1L;
+        UserModel user = new UserModel();
+        user.setEmail("employee@example.com");
+        user.setPassword("emp123");
 
-        userUseCase.validateUserRole(userId, expectedRole);
+        RoleModel employeeRole = new RoleModel(3L, "EMPLOYEE", "EMPLOYEE"); // ROLE_EMPLOYEE = 3L
+        UserModel savedUser = new UserModel();
+        savedUser.setId(100L);
 
-        verify(userPersistencePort).validateUserRole(userId, expectedRole);
+        when(rolePersistencePort.findById(3L)).thenReturn(employeeRole);
+        when(userPersistencePort.passwordEncode("emp123")).thenReturn("encodedEmp");
+        when(userPersistencePort.saveEmployee(user, restaurantId)).thenReturn(savedUser);
+
+        // Act
+        userUseCase.saveEmployee(user, restaurantId);
+
+        // Assert
+        verify(userPersistencePort).isOwnerOfRestaurant(restaurantId);
+        verify(userPersistencePort).userExistWithEmail("employee@example.com");
+        verify(userRulesValidator).validateUserData(user);
+        verify(userPersistencePort).createEmployee(100L, restaurantId);
+        assertEquals("encodedEmp", user.getPassword());
+        assertEquals(employeeRole, user.getRole());
     }
 
     @Test
-    void getRestaurantByUser_ShouldDelegateToPersistencePort() {
-        Long userId = 5L;
+    void validateUserRole_ShouldDelegateToPort() {
+        // Act
+        userUseCase.validateUserRole(10L, "CUSTOMER");
 
-        userUseCase.getRestaurantByUser(userId);
+        // Assert
+        verify(userPersistencePort).validateUserRole(10L, "CUSTOMER");
+    }
 
-        verify(userPersistencePort, times(1)).getRestaurantByUser(userId);
+    @Test
+    void getPhoneNumberByUserId_ShouldReturnPhone() {
+        // Arrange
+        when(userPersistencePort.getPhoneNumberByUserId(99L)).thenReturn("+573001234567");
+
+        // Act
+        String result = userUseCase.getPhoneNumberByUserId(99L);
+
+        // Assert
+        assertEquals("+573001234567", result);
+        verify(userPersistencePort).getPhoneNumberByUserId(99L);
     }
 }

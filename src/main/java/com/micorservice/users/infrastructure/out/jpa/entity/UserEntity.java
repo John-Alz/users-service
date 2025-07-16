@@ -32,6 +32,4 @@ public class UserEntity {
     @JoinColumn(name = "role_id")
     private RoleEntity role;
 
-    private Long restaurantId;
-
 }

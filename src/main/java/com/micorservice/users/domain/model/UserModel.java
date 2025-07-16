@@ -21,11 +21,9 @@ public class UserModel {
     @JoinColumn(name = "role_id")
     private RoleModel role;
 
-    private Long restaurantId;
-
     public UserModel() {}
 
-    public UserModel(Long id, String firstName, String lastName, String documentNumber, String phoneNumber, LocalDate birthDate, String email, String password, RoleModel role, Long restaurantId) {
+    public UserModel(Long id, String firstName, String lastName, String documentNumber, String phoneNumber, LocalDate birthDate, String email, String password, RoleModel role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -35,7 +33,6 @@ public class UserModel {
         this.email = email;
         this.password = password;
         this.role = role;
-        this.restaurantId = restaurantId;
     }
 
     public Long getId() {
@@ -108,13 +105,5 @@ public class UserModel {
 
     public void setRole(RoleModel role) {
         this.role = role;
-    }
-
-    public Long getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(Long restaurantId) {
-        this.restaurantId = restaurantId;
     }
 }
