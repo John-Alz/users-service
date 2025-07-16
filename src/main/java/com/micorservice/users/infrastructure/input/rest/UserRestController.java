@@ -1,7 +1,6 @@
 package com.micorservice.users.infrastructure.input.rest;
 
 import com.micorservice.users.application.dto.response.PhoneResponseDto;
-import com.micorservice.users.application.dto.response.RestaurantIdResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
