@@ -59,7 +59,7 @@ public class UserUseCase implements IUserServicePort {
     }
 
     @Override
-    public String getPhoneNumberByUserId(Long customerId) {
-        return userPersistencePort.getPhoneNumberByUserId(customerId);
+    public UserModel getInfoByUserId(Long customerId) {
+        return userPersistencePort.getInfoByUserId(customerId);
     }
 }

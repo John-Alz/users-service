@@ -10,7 +10,7 @@ public interface IUserServicePort {
 
     void validateUserRole(Long userId, String expectedRole);
 
-    String getPhoneNumberByUserId(Long customerId);
+    UserModel getInfoByUserId(Long customerId);
 
 }
 

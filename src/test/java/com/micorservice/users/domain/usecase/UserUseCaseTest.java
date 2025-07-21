@@ -130,15 +130,21 @@ class UserUseCaseTest {
     }
 
     @Test
-    void getPhoneNumberByUserId_ShouldReturnPhone() {
+    void getInfoByUserId_ShouldReturnUserModel_WhenExists() {
         // Arrange
-        when(userPersistencePort.getPhoneNumberByUserId(99L)).thenReturn("+573001234567");
+        Long customerId = 42L;
+        UserModel expectedUser = new UserModel();
+        expectedUser.setId(customerId);
+        expectedUser.setEmail("user@email.com");
+
+        when(userPersistencePort.getInfoByUserId(customerId)).thenReturn(expectedUser);
 
         // Act
-        String result = userUseCase.getPhoneNumberByUserId(99L);
+        UserModel result = userUseCase.getInfoByUserId(customerId);
 
         // Assert
-        assertEquals("+573001234567", result);
-        verify(userPersistencePort).getPhoneNumberByUserId(99L);
+        assertEquals(expectedUser, result);
+        verify(userPersistencePort).getInfoByUserId(customerId);
     }
+
 }

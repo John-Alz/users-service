@@ -1,6 +1,6 @@
 package com.micorservice.users.infrastructure.input.rest;
 
-import com.micorservice.users.application.dto.response.PhoneResponseDto;
+import com.micorservice.users.application.dto.response.InfoUserResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
@@ -54,10 +54,10 @@ public class UserRestController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{userId}/phone")
-    public ResponseEntity<PhoneResponseDto> getPhoneByUserId(@PathVariable Long userId) {
-        PhoneResponseDto phoneNumber = userHandler.getPhoneNumberByUserId(userId);
-        return ResponseEntity.ok(phoneNumber);
+    @GetMapping("/{userId}/info")
+    public ResponseEntity<InfoUserResponseDto> getPhoneByUserId(@PathVariable Long userId) {
+        InfoUserResponseDto infoUserResponseDto = userHandler.getInfoByUserId(userId);
+        return ResponseEntity.ok(infoUserResponseDto);
     }
 
 
