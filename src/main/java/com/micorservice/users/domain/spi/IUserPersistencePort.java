@@ -25,7 +25,7 @@ public interface IUserPersistencePort {
 
     void createEmployee(Long employeeId, Long restaurantId);
 
-    String getPhoneNumberByUserId(Long customerId);
+    UserModel getInfoByUserId(Long customerId);
 
 
 

@@ -1,6 +1,6 @@
 package com.micorservice.users.application.handler.impl;
 
-import com.micorservice.users.application.dto.response.PhoneResponseDto;
+import com.micorservice.users.application.dto.response.InfoUserResponseDto;
 import com.micorservice.users.application.dto.request.UserRequestDto;
 import com.micorservice.users.application.dto.response.SaveMessageResponse;
 import com.micorservice.users.application.handler.IUserHandler;
@@ -41,8 +41,8 @@ public class UserHandler implements IUserHandler {
     }
 
     @Override
-    public PhoneResponseDto getPhoneNumberByUserId(Long customerId) {
-        String phoneNumber = userServicePort.getPhoneNumberByUserId(customerId);
-        return new PhoneResponseDto(phoneNumber);
+    public InfoUserResponseDto getInfoByUserId(Long customerId) {
+        UserModel useFound = userServicePort.getInfoByUserId(customerId);
+        return new InfoUserResponseDto(useFound.getPhoneNumber(), useFound.getEmail());
     }
 }
