@@ -26,6 +26,12 @@ class UserRulesValidatorTest {
     }
 
     @Test
+    void validateFirstName_shouldThrowRequiredFieldException_whenIsEmpty() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateFirstName("    "));
+        assertEquals("El nombre es requerido.", ex.getMessage());
+    }
+
+    @Test
     void validateFirstName_shouldPass_whenValid() {
         assertDoesNotThrow(() -> validator.validateFirstName("John"));
     }
@@ -33,6 +39,12 @@ class UserRulesValidatorTest {
     @Test
     void validateLastName_shouldThrowRequiredFieldException_whenNull() {
         RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateLastName(null));
+        assertEquals("El apellido es requerido.", ex.getMessage());
+    }
+
+    @Test
+    void validateLastName_shouldThrowRequiredFieldException_whenIsEmpty() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateLastName("    "));
         assertEquals("El apellido es requerido.", ex.getMessage());
     }
 
@@ -48,6 +60,12 @@ class UserRulesValidatorTest {
     }
 
     @Test
+    void validatePassword_shouldThrowRequiredFieldException_whenIsEmpty() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validatePassword("  "));
+        assertEquals("La contraseña es requerida.", ex.getMessage());
+    }
+
+    @Test
     void validatePassword_shouldPass_whenValid() {
         assertDoesNotThrow(() -> validator.validatePassword("password"));
     }
@@ -55,6 +73,12 @@ class UserRulesValidatorTest {
     @Test
     void validateEmail_shouldThrowRequiredFieldException_whenNull() {
         RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateEmail(null));
+        assertEquals("El email es requerido.", ex.getMessage());
+    }
+
+    @Test
+    void validateEmail_shouldThrowRequiredFieldException_whenIsEmpty() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validateEmail("    "));
         assertEquals("El email es requerido.", ex.getMessage());
     }
 
@@ -72,6 +96,12 @@ class UserRulesValidatorTest {
     @Test
     void validatePhoneNumber_shouldThrow_whenNull() {
         RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validatePhoneNumber(null));
+        assertEquals("El numero de telefono es requerido.", ex.getMessage());
+    }
+
+    @Test
+    void validatePhoneNumber_shouldThrow_whenIsEmpty() {
+        RequiredFieldException ex = assertThrows(RequiredFieldException.class, () -> validator.validatePhoneNumber("    "));
         assertEquals("El numero de telefono es requerido.", ex.getMessage());
     }
 

@@ -1,9 +1,9 @@
 package com.micorservice.users.infrastructure.exceptionHandler;
 
 import com.micorservice.users.domain.exception.InvalidFieldException;
+import com.micorservice.users.domain.exception.PasswordInvalidException;
 import com.micorservice.users.domain.exception.RequiredFieldException;
-import com.micorservice.users.infrastructure.exception.AlreadyExistsException;
-import com.micorservice.users.infrastructure.exception.NoDataFoundException;
+import com.micorservice.users.infrastructure.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,5 +33,37 @@ public class ControllerAdvisor {
     public ResponseEntity<ExceptionResponse> handleAlreadyExistsException(AlreadyExistsException e) {
         return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
     }
+
+    @ExceptionHandler(InvalidUserRoleException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidUserRoleException(InvalidUserRoleException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse("EL usuario no cuenta con el rol necesario.", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(UserNotFoundByEmailException.class)
+    public ResponseEntity<ExceptionResponse> handleUserNotFoundByEmailException(UserNotFoundByEmailException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse("Este email no corresponde a ningun usuario.", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(PasswordInvalidException.class)
+    public ResponseEntity<ExceptionResponse> handlePasswordInvalidException(PasswordInvalidException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse("Contraseña incorrecta.", LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponse> handleUnauthorizedException(UnauthorizedException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ExceptionResponse> handleException(Exception e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse(e.getMessage(), LocalDateTime.now()));
+    }
+
+    @ExceptionHandler(UserNotFoundByIdException.class)
+    public ResponseEntity<ExceptionResponse> handleUserNotFoundByIdException(UserNotFoundByIdException e) {
+        return ResponseEntity.badRequest().body(new ExceptionResponse("No existe usuario con ese id.", LocalDateTime.now()));
+    }
+
+
 
 }
